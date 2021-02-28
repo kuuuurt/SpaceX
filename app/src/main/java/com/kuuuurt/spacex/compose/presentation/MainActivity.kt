@@ -21,7 +21,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.kuuuurt.spacex.compose.R
-import com.kuuuurt.spacex.compose.presentation.features.launches.Launches
+import com.kuuuurt.spacex.compose.presentation.features.HistoricalEvents
+import com.kuuuurt.spacex.compose.presentation.features.Launches
 import com.kuuuurt.spacex.compose.presentation.theme.SpaceXTheme
 
 class MainActivity : AppCompatActivity() {
@@ -100,7 +101,7 @@ fun Home() {
                     Launches()
                 }
                 composable(Destinations.History.route) {
-                    Text("History!!!")
+                    HistoricalEvents()
                 }
             }
         }
