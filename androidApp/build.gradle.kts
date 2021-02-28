@@ -54,6 +54,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.3.0-alpha03")
     implementation("androidx.navigation:navigation-compose:1.0.0-alpha08")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0")
 
     implementation("dev.chrisbanes.accompanist:accompanist-coil:0.6.1")
 

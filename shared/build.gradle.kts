@@ -55,8 +55,7 @@ kotlin {
     sourceSets["androidMain"].dependencies {
         implementation("io.ktor:ktor-client-android:$ktorVersion")
 
-        // LiveData and ViewModel
-        val lifecycleVersion = "2.3.0"
-        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+        // ViewModel
+        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0")
     }
 }

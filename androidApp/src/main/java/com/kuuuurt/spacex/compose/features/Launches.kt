@@ -9,13 +9,17 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kuuuurt.spacex.compose.MainViewModelFactory
 import com.kuuuurt.spacex.shared.domain.entities.Launch
 import com.kuuuurt.spacex.compose.presentation.helpers.toStringDate
 import com.kuuuurt.spacex.compose.presentation.theme.ChineseBlack
+import com.kuuuurt.spacex.shared.presentation.LaunchesViewModel
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 val fakeLaunches = mutableListOf<Launch>().apply {
@@ -39,12 +43,13 @@ val fakeLaunches = mutableListOf<Launch>().apply {
 }
 
 @Composable
-fun Launches() {
+fun Launches(launchesViewModel: LaunchesViewModel = viewModel(factory = MainViewModelFactory())) {
+    val launches = launchesViewModel.launches.collectAsState(initial = listOf())
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp)
     ) {
-        items(fakeLaunches) {
+        items(launches.value) {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -65,38 +70,43 @@ fun Launches() {
                             text = it.name,
                             style = MaterialTheme.typography.h4,
                         )
-                        CoilImage(
-                            data = it.patch,
-                            contentDescription = it.name,
-                            modifier = Modifier.size(40.dp),
-                            fadeIn = true,
-                            alignment = Alignment.Center
-                        )
+                        val patch = it.patch
+                        if (patch != null) {
+                            CoilImage(
+                                data = patch,
+                                contentDescription = it.name,
+                                modifier = Modifier.size(40.dp),
+                                fadeIn = true,
+                                alignment = Alignment.Center
+                            )
+                        }
                     }
 
-                    LazyRow(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .requiredHeight(240.dp),
-                        contentPadding = PaddingValues(
-                            top = 8.dp,
-                            bottom = 8.dp,
-                            start = 16.dp,
-                            end = 16.dp
-                        )
-                    ) {
-                        items(it.images) {
-                            Card {
-                                CoilImage(
-                                    data = it,
-                                    contentDescription = it,
-                                    fadeIn = true,
-                                    alignment = Alignment.Center,
-                                    contentScale = ContentScale.Fit,
-                                    modifier = Modifier.fillMaxSize()
-                                )
+                    if (it.images.isNotEmpty()) {
+                        LazyRow(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .requiredHeight(240.dp),
+                            contentPadding = PaddingValues(
+                                top = 8.dp,
+                                bottom = 8.dp,
+                                start = 16.dp,
+                                end = 16.dp
+                            )
+                        ) {
+                            items(it.images) {
+                                Card {
+                                    CoilImage(
+                                        data = it,
+                                        contentDescription = it,
+                                        fadeIn = true,
+                                        alignment = Alignment.Center,
+                                        contentScale = ContentScale.Fit,
+                                        modifier = Modifier.fillMaxSize()
+                                    )
+                                }
+                                Spacer(modifier = Modifier.size(16.dp))
                             }
-                            Spacer(modifier = Modifier.size(16.dp))
                         }
                     }
 
