@@ -2,8 +2,9 @@ package com.kuuuurt.spacex.compose.presentation
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -16,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
@@ -35,19 +35,17 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-enum class Sections(
-    val route: String,
-    @DrawableRes val icon: Int
-) {
-    Launches("Launches", R.drawable.vector_rocket_launch),
-    Rockets("Rockets", R.drawable.vector_rocket)
+enum class Destinations(val route: String) {
+    Launches("launches"),
+    History("history")
 }
 
-private val Destinations = listOf(
-    Sections.Launches,
-    Sections.Rockets
+private val TopLevelDestinations = listOf(
+    Destinations.Launches to R.drawable.vector_rocket_launch,
+    Destinations.History to R.drawable.vector_history
 )
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Home() {
     val navController = rememberNavController()
@@ -58,29 +56,33 @@ fun Home() {
             )
         },
         bottomBar = {
-            BottomNavigation {
-                val currentRoute = currentRoute(navController)
-                Sections.values().forEach {
-                    BottomNavigationItem(
-                        icon = {
-                            Image(
-                                painter = painterResource(id = it.icon),
-                                contentDescription = it.name,
-                                colorFilter = ColorFilter.tint(MaterialTheme.colors.secondary)
-                            )
-                        },
-                        label = { Text(it.route) },
-                        selected = currentRoute == it.route,
-                        onClick = {
-                            // This if check gives us a "singleTop" behavior where we do not create a
-                            // second instance of the composable if we are already on that destination
-                            if (currentRoute != it.route) {
-                                navController.navigate(it.route)
-                            }
-                        },
-                        selectedContentColor = Color.White,
-                        unselectedContentColor = Color.Gray
-                    )
+            val currentRoute = currentRoute(navController)
+            val isInTopLevelDestination = currentRoute in TopLevelDestinations.map { it.first.route }
+
+            AnimatedVisibility(visible = isInTopLevelDestination) {
+                BottomNavigation {
+                    TopLevelDestinations.forEach { (destination, icon) ->
+                        BottomNavigationItem(
+                            icon = {
+                                Image(
+                                    painter = painterResource(id = icon),
+                                    contentDescription = destination.name,
+                                    colorFilter = ColorFilter.tint(MaterialTheme.colors.secondary)
+                                )
+                            },
+                            label = { Text(destination.name) },
+                            selected = currentRoute == destination.route,
+                            onClick = {
+                                // This if check gives us a "singleTop" behavior where we do not create a
+                                // second instance of the composable if we are already on that destination
+                                if (currentRoute != destination.route) {
+                                    navController.navigate(destination.route)
+                                }
+                            },
+                            selectedContentColor = Color.White,
+                            unselectedContentColor = Color.Gray
+                        )
+                    }
                 }
             }
         }
@@ -93,12 +95,12 @@ fun Home() {
                 end = it.calculateEndPadding(LayoutDirection.Ltr)
             )
         ) {
-            NavHost(navController, startDestination = Sections.Launches.route) {
-                composable(Sections.Launches.route) {
+            NavHost(navController, startDestination = Destinations.Launches.route) {
+                composable(Destinations.Launches.route) {
                     Launches()
                 }
-                composable(Sections.Rockets.route) {
-                    Text("Rockets!!!")
+                composable(Destinations.History.route) {
+                    Text("History!!!")
                 }
             }
         }
