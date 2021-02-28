@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.kuuuurt.spacex.compose.domain.entities.Launch
+import com.kuuuurt.spacex.shared.domain.entities.Launch
 import com.kuuuurt.spacex.compose.presentation.helpers.toStringDate
 import com.kuuuurt.spacex.compose.presentation.theme.ChineseBlack
 import dev.chrisbanes.accompanist.coil.CoilImage

@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.kuuuurt.spacex.compose.domain.entities.HistoricalEvent
+import com.kuuuurt.spacex.shared.domain.entities.HistoricalEvent
 import com.kuuuurt.spacex.compose.presentation.helpers.toStringDate
 
 val fakeHistoricalEvents = mutableListOf<HistoricalEvent>().apply {

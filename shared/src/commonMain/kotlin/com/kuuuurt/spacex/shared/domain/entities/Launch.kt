@@ -1,4 +1,4 @@
-package com.kuuuurt.spacex.compose.domain.entities
+package com.kuuuurt.spacex.shared.domain.entities
 
 data class Launch(
     val name: String,
