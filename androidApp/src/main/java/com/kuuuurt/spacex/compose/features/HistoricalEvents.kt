@@ -1,4 +1,4 @@
-package com.kuuuurt.spacex.compose.presentation.features
+package com.kuuuurt.spacex.compose.features
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,11 +8,15 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.kuuuurt.spacex.shared.domain.entities.HistoricalEvent
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kuuuurt.spacex.compose.MainViewModelFactory
 import com.kuuuurt.spacex.compose.presentation.helpers.toStringDate
+import com.kuuuurt.spacex.shared.domain.entities.HistoricalEvent
+import com.kuuuurt.spacex.shared.presentation.HistoricalEventsViewModel
 
 val fakeHistoricalEvents = mutableListOf<HistoricalEvent>().apply {
     repeat(50) {
@@ -28,12 +32,17 @@ val fakeHistoricalEvents = mutableListOf<HistoricalEvent>().apply {
 }
 
 @Composable
-fun HistoricalEvents() {
+fun HistoricalEvents(
+    viewModel: HistoricalEventsViewModel = viewModel(
+        factory = MainViewModelFactory()
+    )
+) {
+    val historicalEvents = viewModel.historicalEvents.collectAsState(initial = listOf())
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
     ) {
-        items(fakeHistoricalEvents) {
+        items(historicalEvents.value) {
             Column(
                 modifier = Modifier
                     .clickable {

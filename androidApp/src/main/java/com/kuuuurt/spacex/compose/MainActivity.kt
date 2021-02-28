@@ -18,14 +18,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.kuuuurt.spacex.compose.R
-import com.kuuuurt.spacex.compose.presentation.features.HistoricalEvents
+import com.kuuuurt.spacex.compose.features.HistoricalEvents
 import com.kuuuurt.spacex.compose.presentation.features.Launches
 import com.kuuuurt.spacex.compose.presentation.theme.SpaceXTheme
-import com.kuuuurt.spacex.shared.presentation.LaunchesViewModel
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

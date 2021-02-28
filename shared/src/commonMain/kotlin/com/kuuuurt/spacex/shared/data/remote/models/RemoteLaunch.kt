@@ -9,7 +9,7 @@ data class RemoteLaunch(
     @SerialName("flight_number")
     val flightNumber: String,
     @SerialName("date_unix")
-    val date: Long,
+    val dateUnix: Long,
     val links: RemoteLaunchLinks
 )
 
